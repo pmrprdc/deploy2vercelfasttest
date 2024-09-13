@@ -1,17 +1,24 @@
 // src/App.js
 import { useState } from 'react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from './firebaseConfig';
 
 function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+
 
   // Handle login button click (for now it just logs email and password)
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log('Email:', email);
-    console.log('Password:', password);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      alert('Login successful');
+    } catch (err) {
+      setError(err.message);
+    }
   };
-
   return (
     <div style={{backgroundColor:'green'}}>
       <div style={{ display:'flex', alignItems:'center', flexDirection: "column"}}>
